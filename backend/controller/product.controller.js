@@ -1,17 +1,17 @@
-import Product from "../models/product.model.js";
-import mongoose from "mongoose";
+const Product = require("../models/product.model");
+const mongoose = require("mongoose");
 
-export const getProducts = async (req, res) => {
+const getProducts = async (req, res) => {
   try {
     const products = await Product.find({});
     res.status(200).json({ success: true, data: products });
   } catch (error) {
-    console.log("error in ferching products:", error.message);
+    console.log("error in fetching products:", error.message);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
-export const createProduct = async (req, res) => {
+const createProduct = async (req, res) => {
   const product = req.body;
 
   if (!product.name || !product.price || !product.image) {
@@ -30,7 +30,7 @@ export const createProduct = async (req, res) => {
   }
 };
 
-export const updateProduct = async (req, res) => {
+const updateProduct = async (req, res) => {
   const { id } = req.params;
   const product = req.body;
 
@@ -50,7 +50,7 @@ export const updateProduct = async (req, res) => {
   }
 };
 
-export const deleteProdcut = async (req, res) => {
+const deleteProduct = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -66,4 +66,11 @@ export const deleteProdcut = async (req, res) => {
     console.error("Error in deleting product:", error.message);
     res.status(500).json({ success: false, message: "Server Error" });
   }
+};
+
+module.exports = {
+  getProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
 };
